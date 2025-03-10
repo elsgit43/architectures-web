@@ -1,26 +1,24 @@
-import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import { HashRouter as Router, Routes, Route } from 'react-router-dom';
+import { Home } from './Pages/home';
+import { Favorites } from './Pages/favorites';
+import { Profil } from './Pages/profile';
+import { Recipe } from './Pages/recipe';
+import { Layout } from './Layout';
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          le GOAT = ELIAS
-        </p>
-        <a
-          className="App-link"
-          href="https://www.youtube.com/watch?v=AyMOS5rNx-4"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          NE PAS CLIQUER SUR CE LIEN
-        </a>
-      </header>
-    </div>
-  );
+  return(
+    <Router> 
+      <Routes>
+        <Route element={<Layout/>}>
+          <Route path="/" element={<Home/>}/>
+          <Route path="/favorites" element={<Favorites/>}/>
+          <Route path="/profile" element={<Profil/>}/>
+          <Route path="/recipe/:id" element={<Recipe/>}/>
+        </Route>
+      </Routes>
+    </Router>
+  )
 }
 
 export default App;
