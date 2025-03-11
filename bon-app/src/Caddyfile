@@ -142,6 +142,11 @@ test.cours.quimerch.com {
 	reverse_proxy test:80
 }
 
+react.cours.quimerch.com {
+encode gzip zstd
+reverse_proxy frontend:80
+}
+
 grafana.cours.quimerch.com {
 	encode gzip zstd
 	reverse_proxy grafana:3000
