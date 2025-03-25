@@ -7,7 +7,6 @@ export function Navbar(){
             <Link to="/">Home</Link>
             <Link to="/profile">Profil</Link>
             <Link to="/favorites">Favoris</Link>
-            <Link to="/recipe">Recette</Link>
         </>
     )
 }
