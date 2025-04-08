@@ -92,3 +92,7 @@ input {
 .search-result-item:hover {
   background: #f3f3f3;
 }
+
+.navbar{
+  background-image: url("./assets/cuisine.jpeg")
+}

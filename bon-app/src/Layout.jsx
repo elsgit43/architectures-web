@@ -6,7 +6,6 @@ import { Searchbar } from "./Components/Searchbar"
 export function Layout(){
     return(
         <>
-            Bon app !
             <br/>
             <Navbar/>
             <Searchbar/>
