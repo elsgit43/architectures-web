@@ -47,6 +47,9 @@ export function Recipe() {
   return (
     <div style={styles.container}>
       <h1 style={styles.title}>{recipe?.name ?? "Nom non disponible"}</h1>
+      <div style={styles.description}>
+        <p><strong>Description :</strong> {recipe?.description ?? "Description non disponible"}</p>
+      </div>
       {recipe?.image_url && <img src={recipe.image_url} alt={recipe?.name} style={styles.image} />}
       
       <div style={styles.details}>
@@ -54,10 +57,6 @@ export function Recipe() {
         <div style={styles.detailItem}><strong>Temps de préparation :</strong> {recipe?.prep_time ?? "Non indiqué"} min</div>
         <div style={styles.detailItem}><strong>Nombre de portions :</strong> {recipe?.servings ?? "Non indiqué"}</div>
         <div style={styles.detailItem}><strong>Type de plat :</strong> {recipe?.when_to_eat ?? "Non indiqué"}</div>
-      </div>
-
-      <div style={styles.description}>
-        <p><strong>Description :</strong> {recipe?.description ?? "Description non disponible"}</p>
       </div>
 
       <div style={styles.instructions}>
