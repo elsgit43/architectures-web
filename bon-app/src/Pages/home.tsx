@@ -76,7 +76,7 @@ export function Home() {
                   textOverflow: "ellipsis"
                 }}>
                   
-                  <img src={reciped.image_url} width="100%" alt={reciped.name} className="App-logo"></img>
+                  <img src={reciped.image_url} width="100%" alt={reciped.name}></img>
                   <h2>{reciped.name}</h2>
                   <p>{reciped.instructions}</p>
                   
