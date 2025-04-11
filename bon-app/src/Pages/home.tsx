@@ -34,10 +34,10 @@ export function Home() {
             async function fetchRecipe() {
                 try {
                     const response = await fetch('https://gourmet.cours.quimerch.com/recipes',options);
-                    console.log(response);
                     if (!response.ok) throw new Error("Erreur lors de la récupération des données");
     
                     const data = await response.json();
+                    console.log(data)
                     setRecipe(data);
                 } catch (error) {
                     setError((error as Error).message);
@@ -63,8 +63,8 @@ export function Home() {
 
             <div style={{ display: "flex", flexWrap: "wrap", gap: "20px" }}>
               {recipe.map((reciped) => (
-                <Link to={{pathname:`/recipe/${reciped.id}`}}>
-                <div key={recipe.id} style={{
+                <Link key={reciped.id} to={{pathname:`/recipe/${reciped.id}`}}>
+                <div style={{
                   border: "1px solid #ddd",
                   padding: "20px",
                   borderRadius: "10px",

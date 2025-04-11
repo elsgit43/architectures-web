@@ -28,10 +28,9 @@ export function Profil() {
             console.log(data);
             const tokenData = decodeJWT(data.token);
             console.log("Données du token :", tokenData);
-            const expirationTimestamp = tokenData.exp * 1000; // Convertir en millisecondes
+            const expirationTimestamp = tokenData.exp*1000;
             const now = Date.now();
-            const remainingTime = (expirationTimestamp - now) / 1000; // Convertir en secondes
-
+            const remainingTime = 60*60;
             if (remainingTime <= 0) {
             throw new Error("Le token est déjà expiré !");
             }

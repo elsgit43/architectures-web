@@ -1,8 +1,15 @@
-import React, { useEffect, useState } from "react";
+import React, { use, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import * as FaIcons from "react-icons/fa";
+import { IconType } from "react-icons";
+import Cookies from "js-cookie";
 
 export function Recipe() {
   const { id } = useParams();
+  const token=Cookies.get('token');
+  const FaHeart: IconType = FaIcons.FaHeart;
+  const FaRegHeart: IconType = FaIcons.FaRegHeart;
+  const FaHeartBroken: IconType = FaIcons.FaHeartBroken;
   const [recipe, setRecipe] = useState<{
     name: string;
     description: string;
@@ -17,6 +24,7 @@ export function Recipe() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const options = { method: 'GET', headers: { Accept: 'application/json, application/xml' } };
+  const [isFavorite, setIsFavorite] = useState(false);
   console.log(id);
 
   useEffect(() => {
@@ -37,9 +45,43 @@ export function Recipe() {
         setLoading(false);
       }
     }
+    
 
     fetchRecipe();
   }, [id]);
+
+  useEffect(() => {
+    async function Favorite(){
+      if(isFavorite){
+        const url = `https://gourmet.cours.quimerch.com/users/nu/favorites?recipeID=${id}`;
+      const options = {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json, application/xml',
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+
+      };
+  
+      try {
+        const response = await fetch(url, options);
+        const data = await response.json();
+        console.log(data);
+      } catch (error) {
+        console.error(error);
+      }
+      }
+    };
+    Favorite();
+  },[isFavorite])
+
+  const [isHovered, setIsHovered] = useState(false);
+
+  const toggleFavorite=() => {
+    setIsFavorite(!isFavorite);
+  };
+  
 
   if (loading) return <p>Chargement...</p>;
   if (error) return <p>Erreur : {error}</p>;
@@ -47,6 +89,37 @@ export function Recipe() {
   return (
     <div style={styles.container}>
       <h1 style={styles.title}>{recipe?.name ?? "Nom non disponible"}</h1>
+      <div style={{ display: "flex", alignItems: "center", marginBottom: "20px" }}>
+  <button
+    onClick={toggleFavorite}
+    onMouseEnter={() => setIsHovered(true)}
+    onMouseLeave={() => setIsHovered(false)}
+    style={{
+      background: "none",
+      border: "none",
+      cursor: "pointer",
+      fontSize: "1.8em",
+      display: "flex",
+      alignItems: "center",
+    }}
+    aria-label="Ajouter aux favoris"
+  >
+    {isFavorite ? (
+      isHovered ? (
+        <FaHeartBroken color="red" />
+      ) : (
+        <FaHeart color="red" />
+      )
+    ) : (
+      isHovered ? (
+        <FaRegHeart color="red" />
+      ) : (
+        <FaRegHeart color="gray" />
+      )
+      
+    )}
+  </button>
+        <span style={{ marginLeft: "10px", fontSize: "1.2em", alignSelf:"screenLeft"}}>Ajouter aux favoris</span></div>
       {recipe?.image_url && <img src={recipe.image_url} alt={recipe?.name} style={styles.image} />}
       
       <div style={styles.details}>
