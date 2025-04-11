@@ -25,7 +25,6 @@ export function Recipe() {
   const [error, setError] = useState<string | null>(null);
   const options = { method: 'GET', headers: { Accept: 'application/json, application/xml' } };
   const [isFavorite, setIsFavorite] = useState(false);
-  console.log(id);
 
   useEffect(() => {
     async function fetchRecipe() {
@@ -45,9 +44,24 @@ export function Recipe() {
         setLoading(false);
       }
     }
+
+    async function fetchfavorite(){
+      const options = {method: 'GET', headers: {Accept: 'application/json, application/xml', 'Authorization': `Bearer ${token}`}};
+      const response = await fetch('https://gourmet.cours.quimerch.com/favorites',options);
+      if (!response.ok) throw new Error("Erreur lors de la récupération des données");
+      const data = await response.json();
+        if(data){
+          for(let i=0; i<data.length; i++){
+            if (data[i].recipe.id===id){
+              setIsFavorite(true);
+            }
+          }
+        }
+    }
     
 
     fetchRecipe();
+    fetchfavorite();
   }, [id]);
 
   useEffect(() => {
@@ -71,6 +85,17 @@ export function Recipe() {
       } catch (error) {
         console.error(error);
       }
+      }
+      else{
+        const url = `https://gourmet.cours.quimerch.com/users/nu/favorites?recipeID=${id}`;
+        const options = {method: 'DELETE', headers: {Accept: 'application/json, application/xml','Authorization': `Bearer ${token}`}};
+
+        try {
+          const response = await fetch(url, options);
+          console.log(response);
+        } catch (error) {
+          console.error(error);
+        }
       }
     };
     Favorite();

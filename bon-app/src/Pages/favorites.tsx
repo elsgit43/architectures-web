@@ -42,10 +42,11 @@ export function Favorites() {
               const response = await fetch('https://gourmet.cours.quimerch.com/favorites',options);
               if (!response.ok) throw new Error("Erreur lors de la récupération des données");
               const data = await response.json();
-              console.log(data);
-              for(let i=0; i<data.length; i++){
-              data[i]=data[i].recipe;
-              }
+                if(data){
+                  for(let i=0; i<data.length; i++){
+                  data[i]=data[i].recipe;
+                  }
+                }
               setRecipes(data);
           } finally {
               setLoading(false);
@@ -53,7 +54,6 @@ export function Favorites() {
       }
       
         fetchRecipe();
-        console.log(recipes);
   }, []);
 
   if (loading) return <p>Chargement...</p>;
