@@ -22,20 +22,26 @@ export function Profil() {
         };
     
         try {
-            console.log(pseudo,password)
             const response = await fetch(url, options);
             const data = await response.json();
-            console.log(data);
-            const tokenData = decodeJWT(data.token);
-            console.log("Données du token :", tokenData);
-            const expirationTimestamp = tokenData.exp*1000;
-            const now = Date.now();
-            const remainingTime = 60*60;
-            if (remainingTime <= 0) {
-            throw new Error("Le token est déjà expiré !");
+            if (response.ok) {
+                console.log(data);
+                const tokenData = decodeJWT(data.token);
+                console.log("Données du token :", tokenData);
+                const expirationTimestamp = tokenData.exp*1000;
+                const now = Date.now();
+                const remainingTime = 60*60;
+                if (remainingTime <= 0) {
+                throw new Error("Le token est déjà expiré !");
+                }
+                Cookies.set('token', data.token, { expires: remainingTime / 86400, path: '/' });
+                console.log("Token stocké avec une durée de", remainingTime, "secondes");
+                window.location.reload();
             }
-            Cookies.set('token', data.token, { expires: remainingTime / 86400, path: '/' });
-            console.log("Token stocké avec une durée de", remainingTime, "secondes");
+            else {
+                console.error("Erreur lors de la connexion :", data.title);
+                alert("Erreur lors de la connexion : " + data.title);
+            }
         } catch (error) {
             console.error(error);
         }
