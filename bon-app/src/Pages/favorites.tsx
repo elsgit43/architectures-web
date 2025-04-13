@@ -42,6 +42,9 @@ export function Favorites() {
               const response = await fetch('https://gourmet.cours.quimerch.com/favorites',options);
               if (!response.ok) throw new Error("Erreur lors de la récupération des données");
               const data = await response.json();
+                if (data.title== "Unauthorized") {
+                  window.location.href = '/profile';
+                }
                 if(data){
                   for(let i=0; i<data.length; i++){
                   data[i]=data[i].recipe;
@@ -62,29 +65,23 @@ export function Favorites() {
   return(
         <>
             <h1>Consultez ici vos favoris</h1>
-            <div style={{ display: "flex", flexWrap: "wrap", gap: "20px" }}>
-              {recipes.map((reciped) => (
-                <Link key={reciped.id} to={{pathname:`/recipe/${reciped.id}`}}>
-                <div style={{
-                  border: "1px solid #ddd",
-                  padding: "20px",
-                  borderRadius: "10px",
-                  boxShadow: "2px 2px 10px rgba(0,0,0,0.1)",
-                  maxWidth: "300px",
-                  maxHeight:"400px",
-                  whiteSpace: "nowrap",
-                  overflow: "hidden",
-                  textOverflow: "ellipsis"
-                }}>
-                  
-                  <img src={reciped.image_url} width="100%" alt={reciped.name}></img>
-                  <h2>{reciped.name}</h2>
-                  <p>{reciped.instructions}</p>
-                  
-                </div>
-                </Link>
-              ))}
-            </div>
+            <div className="recipe-grid">
+                          {recipes.map((reciped) => (
+                            <Link
+                            key={reciped.id}
+                            to={{pathname:`/recipe/${reciped.id}`}}
+                            style={{textDecoration:'none'}}>
+                            <div className="recipe-card">
+                              <img src={reciped.image_url} alt={reciped.name}></img>
+                              <div className="recipe-card-content">
+                              <h2>{reciped.name}</h2>
+                              <p>{reciped.description}</p>
+                              </div>
+                              
+                            </div>
+                            </Link>
+                          ))}
+                        </div>
         </>
     )
 }

@@ -55,12 +55,34 @@ export function Profil() {
         try {
         const response = await fetch(url, options);
         const data = await response.json();
-        console.log(data);
-        setProfile(data)
+        if (data.title== "Unauthorized") {
+            alert("Votre session a expiré, veuillez vous reconnecter");
+            disconnect();
+        }
+        else{
+            console.log(data);
+            setProfile(data)
+    }
         } catch (error) {
         console.error(error);
         }
     }
+
+    async function disconnect(){
+        const url = 'https://gourmet.cours.quimerch.com/logout';
+        const options = {method: 'GET', headers: {Accept: 'application/json, application/xml'}};
+
+        try {
+            const response = await fetch(url, options);
+            const data = await response.json();
+            console.log(data);
+            Cookies.remove('token');
+            window.location.reload();
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
     const [password,setPassword] =useState("");
     const [pseudo,setPseudo] =useState("");
     const [profile,setProfile]=useState({})
@@ -75,21 +97,39 @@ export function Profil() {
 
     if(!Cookies.get('token')){
         return(
-            <>
+            <div className="login-container">
                 <h1>Se connecter</h1>
-                Pseudo
-                <input value={pseudo} placeholder="Entrez votre pseudo" onChange={(e)=> setPseudo(e.target.value)}></input>
-                Mot de passe
-                <input value={password} type="password" placeholder="Entrez votre mot de passe" onChange={(e)=> setPassword(e.target.value)}></input>
-                <button onClick={() => connect(pseudo, password)}> Se connecter </button>
-            </>
+                <div className="form-group">
+                    <label>Pseudo</label>
+                    <input 
+                        value={pseudo} 
+                        placeholder="Entrez votre pseudo" 
+                        onChange={(e)=> setPseudo(e.target.value)}
+                    />
+                </div>
+                <div className="form-group">
+                    <label>Mot de passe</label>
+                    <input 
+                        value={password} 
+                        type="password" 
+                        placeholder="Entrez votre mot de passe" 
+                        onChange={(e)=> setPassword(e.target.value)}
+                    />
+                </div>
+                <button className="button" onClick={() => connect(pseudo, password)}>
+                    Se connecter
+                </button>
+            </div>
         )
     }
     else{
-    return(
-        <>
-            <h1>Accédez à votre profil depuis cette page</h1>
-            Bienvenue {profile.username} 
-        </>
-    )}
+        return(
+            <div className="login-container">
+                <h1>Votre Profil</h1>
+                <p className="welcome-text">Bienvenue {profile.username}</p>
+                <button className="button" onClick={() => disconnect()}>
+                    Se déconnecter
+                </button>
+            </div>
+        )}
 }
