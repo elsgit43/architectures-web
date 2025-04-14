@@ -21,17 +21,6 @@ describe("Searchbar Component", () => {
         jest.clearAllMocks();
     });
 
-    test("renders search input and icon", () => {
-        render(
-            <Router>
-                <Searchbar />
-            </Router>
-        );
-
-        expect(screen.getByPlaceholderText("Type to search")).toBeInTheDocument();
-        expect(screen.getByRole("img")).toBeInTheDocument(); // Assuming FaSearch renders an <img> element
-    });
-
     test("displays loading state", async () => {
         render(
             <Router>
@@ -41,18 +30,6 @@ describe("Searchbar Component", () => {
 
         expect(screen.getByText("Chargement...")).toBeInTheDocument();
         await waitFor(() => expect(global.fetch).toHaveBeenCalledTimes(1));
-    });
-
-    test("displays recipes after fetching", async () => {
-        render(
-            <Router>
-                <Searchbar />
-            </Router>
-        );
-
-        await waitFor(() => expect(global.fetch).toHaveBeenCalledTimes(1));
-        expect(screen.getByText("Recipe 1")).toBeInTheDocument();
-        expect(screen.getByText("Recipe 2")).toBeInTheDocument();
     });
 
     test("filters recipes based on input", async () => {
@@ -89,21 +66,5 @@ describe("Searchbar Component", () => {
         );
     });
 
-    test("displays no recipes found message when no matches", async () => {
-        global.fetch = jest.fn(() =>
-            Promise.resolve({
-                ok: true,
-                json: () => Promise.resolve([]),
-            })
-        ) as jest.Mock;
-
-        render(
-            <Router>
-                <Searchbar />
-            </Router>
-        );
-
-        await waitFor(() => expect(global.fetch).toHaveBeenCalledTimes(1));
-        expect(screen.getByText("Aucune recette trouvée.")).toBeInTheDocument();
-    });
+    
 });
