@@ -1,15 +1,22 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import cuisine from "../assets/cuisine.jpeg"
+import { Searchbar } from "./Searchbar";
 
 
 export function Navbar(){
+    const location = useLocation();
     return(
         <>
         <div className="navbar">
-            <Link to="/">Home</Link>
-            <Link to="/profile">Profil</Link>
-            <Link to="/favorites">Favoris</Link>
+            <h1>Ici ça cook</h1>
+            <div className="nav-links">
+                <Link to="/" className={location.pathname==="/" ? "active" : ""}>Home</Link>
+                <Link to="/profile" className={location.pathname==="/profile" ? "active" : ""}>Profil</Link>
+                <Link to="/favorites" className={location.pathname==="/favorites" ? "active" : ""}>Favoris</Link>
+            </div>
+            <Searchbar/>
         </div>
+        
         </>
     )
 }
