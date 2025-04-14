@@ -26,7 +26,7 @@ interface Recipe{
 
 export function Favorites() {
   const token=Cookies.get('token');
-  const [recipes, setRecipes] = useState<Recipe | null>(null);
+  const [recipes, setRecipes] = useState<Recipe[] | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<String | null>(null);
           
@@ -41,17 +41,20 @@ export function Favorites() {
           try {
               const options = {method: 'GET', headers: {Accept: 'application/json, application/xml', 'Authorization': `Bearer ${token}`}};
               const response = await fetch('https://gourmet.cours.quimerch.com/favorites',options);
-              if (!response.ok) throw new Error("Erreur lors de la récupération des données");
+              
               const data = await response.json();
                 if (data.title === "Unauthorized") {
-                  window.location.href = '/profile';
+                  window.location.assign('/profile');
                 }
+                if (!response.ok) throw new Error("Erreur lors de la récupération des données");
                 if(data){
                   for(let i=0; i<data.length; i++){
                   data[i]=data[i].recipe;
                   }
                 }
               setRecipes(data);
+          } catch (err: any) {
+            setError(err.message);
           } finally {
               setLoading(false);
           }
@@ -62,7 +65,7 @@ export function Favorites() {
 
   if (loading) return <p>Chargement...</p>;
   if (error) return <p>Erreur : {error}</p>;
-  if (!recipes) return <p>Vous n'avez pas encore de favoris. Vous pouvez en ajouter <Link to={"/"}>ici</Link> !</p>;
+  if (!recipes || recipes.length === 0) return <p>Vous n'avez pas encore de favoris. Vous pouvez en ajouter <Link to={"/"}>ici</Link> !</p>;
   return(
         <>
             <h1>Consultez ici vos favoris</h1>
