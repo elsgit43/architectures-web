@@ -154,10 +154,6 @@ export function Recipe() {
         <div style={styles.detailItem}><strong>Type de plat :</strong> {recipe?.when_to_eat ?? "Non indiqué"}</div>
       </div>
 
-      <div style={styles.description}>
-        <p><strong>Description :</strong> {recipe?.description ?? "Description non disponible"}</p>
-      </div>
-
       <div style={styles.instructions}>
         <h2>Recette :</h2>
         <div>{recipe?.instructions ?? "Non indiqué"}</div>
