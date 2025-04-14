@@ -10,17 +10,27 @@ jobs:
   test:
     runs-on: ubuntu-latest
 
+    defaults:
+      run:
+        working-directory: bon-app
+
     steps:
-      - name: 🛎️ Récupération du code
+      - name: Récupération du code
         uses: actions/checkout@v3
 
-      - name: 📦 Installer Node.js
+      - name: Installer Node.js
         uses: actions/setup-node@v3
         with:
           node-version: 18
 
-      - name: 📚 Installer les dépendances
-        run: cd bon-app && npm install
+      - name: Installer les dépendances
+        run: npm install
 
-      - name: 🧪 Lancer les tests
-        run: cd bon-app && npm test -- --watchAll=false
+      - name: Lancer les tests avec coverage
+        run: npm test -- --coverage
+
+      - name: Upload du rapport de coverage
+        uses: actions/upload-artifact@v3
+        with:
+          name: coverage-report
+          path: bon-app/coverage
