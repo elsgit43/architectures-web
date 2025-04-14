@@ -35,6 +35,7 @@ RUN addgroup -g 1001 -S app-group \
 
 # Copy built files from builder stage
 COPY --from=builder --chown=app-user:app-group /app/build ./
+COPY --from=builder /app/serve.json ./
 
 # Install serve package globally
 RUN npm install -g serve
