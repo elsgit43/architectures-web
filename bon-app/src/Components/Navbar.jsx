@@ -1,5 +1,4 @@
 import { Link, useLocation } from "react-router-dom";
-import cuisine from "../assets/cuisine.jpeg"
 import { Searchbar } from "./Searchbar";
 
 

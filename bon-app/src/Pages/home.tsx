@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react"
-import logo from '../assets/logo.svg';
 import { Link } from 'react-router-dom';
 import { JSX } from "react/jsx-runtime";
 
@@ -28,9 +27,9 @@ export function Home() {
         const [recipe, setRecipe] = useState<Recipe | null>(null);
         const [loading, setLoading] = useState(true);
         const [error, setError] = useState<string | null>(null);
-        const options = {method: 'GET', headers: {Accept: 'application/json, application/xml'}};
     
         useEffect(() => {
+            const options = {method: 'GET', headers: {Accept: 'application/json, application/xml'}};
             async function fetchRecipe() {
                 try {
                     const response = await fetch('https://gourmet.cours.quimerch.com/recipes',options);

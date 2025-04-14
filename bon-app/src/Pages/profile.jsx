@@ -28,8 +28,6 @@ export function Profil() {
                 console.log(data);
                 const tokenData = decodeJWT(data.token);
                 console.log("Données du token :", tokenData);
-                const expirationTimestamp = tokenData.exp*1000;
-                const now = Date.now();
                 const remainingTime = 60*60;
                 if (remainingTime <= 0) {
                 throw new Error("Le token est déjà expiré !");
@@ -47,26 +45,7 @@ export function Profil() {
         }
     }
 
-    async function me(){
-        const url = 'https://gourmet.cours.quimerch.com/me';
-        const token = Cookies.get('token');
-        const options = {method: 'GET', headers: {Accept: 'application/json, application/xml', 'Authorization': `Bearer ${token}`}};
-
-        try {
-        const response = await fetch(url, options);
-        const data = await response.json();
-        if (data.title== "Unauthorized") {
-            alert("Votre session a expiré, veuillez vous reconnecter");
-            disconnect();
-        }
-        else{
-            console.log(data);
-            setProfile(data)
-    }
-        } catch (error) {
-        console.error(error);
-        }
-    }
+    
 
     async function disconnect(){
         const url = 'https://gourmet.cours.quimerch.com/logout';
@@ -86,16 +65,36 @@ export function Profil() {
     const [password,setPassword] =useState("");
     const [pseudo,setPseudo] =useState("");
     const [profile,setProfile]=useState({})
+    const token= Cookies.get('token');
 
     useEffect(() => {
-        if(Cookies.get('token')){
+        async function me(){
+            const url = 'https://gourmet.cours.quimerch.com/me';
+            const options = {method: 'GET', headers: {Accept: 'application/json, application/xml', 'Authorization': `Bearer ${token}`}};
+    
+            try {
+            const response = await fetch(url, options);
+            const data = await response.json();
+            if (data.title === "Unauthorized") {
+                alert("Votre session a expiré, veuillez vous reconnecter");
+                disconnect();
+            }
+            else{
+                console.log(data);
+                setProfile(data)
+        }
+            } catch (error) {
+            console.error(error);
+            }
+        }
+        if(token){
             me();
             console.log(profile)
         }
-    }, [Cookies.get('token')]);
+    }, [token,profile]);
 
 
-    if(!Cookies.get('token')){
+    if(!token){
         return(
             <div className="login-container">
                 <h1>Se connecter</h1>
