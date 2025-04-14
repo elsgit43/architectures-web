@@ -54,10 +54,6 @@ export function Searchbar(){
             useEffect(() => {
                 fetchRecipes(input);
             }, [input, fetchRecipes]);
-
-            useEffect(() => {
-                console.log("Recipe updated:", recipe2);
-            }, [recipe2]);
                 
         
             if (loading) return <p>Chargement...</p>;
@@ -76,7 +72,7 @@ export function Searchbar(){
                 <p>Chargement...</p>
             ) : recipe2.length>0 ?(
                           recipe2.map((reciped) => (
-                            <Link to={{pathname:`/recipe/${reciped.id}`}}
+                            <Link key={reciped.id} to={{pathname:`/recipe/${reciped.id}`}}
                             onClick={() => setInput("")}
                             className="search-result-item">
                               <h2>{reciped.name}</h2>

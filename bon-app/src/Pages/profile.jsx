@@ -2,16 +2,6 @@ import React, { useState, useEffect} from "react";
 import Cookies from 'js-cookie';
 
 export function Profil() {
-    function decodeJWT(token) {
-        try {
-            const [, payloadBase64] = token.split(".");
-            const payload = JSON.parse(atob(payloadBase64));
-            return payload;
-        } catch (error) {
-            console.error("Erreur de décodage du token :", error);
-            return null;
-        }
-    }
 
     async function connect(pseudo,password){
         const url = 'https://gourmet.cours.quimerch.com/login';
@@ -25,16 +15,11 @@ export function Profil() {
             const response = await fetch(url, options);
             const data = await response.json();
             if (response.ok) {
-                console.log(data);
-                const tokenData = decodeJWT(data.token);
-                console.log("Données du token :", tokenData);
                 const remainingTime = 60*60;
                 if (remainingTime <= 0) {
                 throw new Error("Le token est déjà expiré !");
                 }
-                Cookies.set('token', data.token, { expires: remainingTime / 86400, path: '/' });
-                console.log("Token stocké avec une durée de", remainingTime, "secondes");
-                window.location.reload();
+                Cookies.set('token', data.token, { expires: remainingTime / 86400, path: '/' });                window.location.reload();
             }
             else {
                 console.error("Erreur lors de la connexion :", data.title);
@@ -53,10 +38,10 @@ export function Profil() {
 
         try {
             const response = await fetch(url, options);
-            const data = await response.json();
-            console.log(data);
-            Cookies.remove('token');
-            window.location.reload();
+            if (response.ok) {
+                Cookies.remove('token');
+                window.location.reload();
+            }
         } catch (error) {
             console.error(error);
         }
@@ -80,7 +65,6 @@ export function Profil() {
                 disconnect();
             }
             else{
-                console.log(data);
                 setProfile(data)
         }
             } catch (error) {
@@ -89,7 +73,6 @@ export function Profil() {
         }
         if(token){
             me();
-            console.log(profile)
         }
     }, [token,profile]);
 

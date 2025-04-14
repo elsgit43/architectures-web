@@ -2,6 +2,7 @@ import Cookies from 'js-cookie';
 import React, { useEffect, useState } from "react"
 import { Link } from "react-router-dom";
 import { JSX } from "react/jsx-runtime";
+import defaultImage from '../assets/default-image.png';
 
 interface Recipe{
   map(arg0: (reciped: any) => JSX.Element): React.ReactNode;
@@ -72,7 +73,7 @@ export function Favorites() {
                             to={{pathname:`/recipe/${reciped.id}`}}
                             style={{textDecoration:'none'}}>
                             <div className="recipe-card">
-                              <img src={reciped.image_url} alt={reciped.name}></img>
+                            <img src={reciped.image_url || defaultImage} alt={reciped.name}></img>
                               <div className="recipe-card-content">
                               <h2>{reciped.name}</h2>
                               <p>{reciped.description}</p>

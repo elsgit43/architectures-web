@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import * as FaIcons from "react-icons/fa";
 import { IconType } from "react-icons";
 import Cookies from "js-cookie";
+import defaultImage from '../assets/default-image.png';
 
 export function Recipe() {
   const { id } = useParams();
@@ -33,7 +34,6 @@ export function Recipe() {
       try {
         const options = { method: 'GET', headers: { Accept: 'application/json, application/xml' } };
         const response = await fetch(`https://gourmet.cours.quimerch.com/recipes/${id}`, options);
-        console.log(response);
         if (!response.ok) throw new Error("Erreur lors de la récupération des données");
 
         const data = await response.json();
@@ -61,7 +61,9 @@ export function Recipe() {
     
 
     fetchRecipe();
-    fetchfavorite();
+    if(token){
+      fetchfavorite();
+    }
   }, [id,token]);
 
   useEffect(() => {
@@ -80,8 +82,7 @@ export function Recipe() {
   
       try {
         const response = await fetch(url, options);
-        const data = await response.json();
-        console.log(data);
+        if (!response.ok) throw new Error("Erreur lors de l'ajout aux favoris");
       } catch (error) {
         console.error(error);
       }
@@ -92,13 +93,19 @@ export function Recipe() {
 
         try {
           const response = await fetch(url, options);
-          console.log(response);
+          if (!response.ok) throw new Error("Erreur lors de la suppression des favoris");
         } catch (error) {
           console.error(error);
         }
       }
     };
-    Favorite();
+    if(token){
+      Favorite();
+    }
+    if(!token && isFavorite){
+      alert("Veuillez vous connecter pour ajouter une recette aux favoris");
+      setIsFavorite(false);
+    }
   },[isFavorite,id,token])
 
   const [isHovered, setIsHovered] = useState(false);
@@ -145,7 +152,7 @@ export function Recipe() {
     )}
   </button>
         <span style={{ marginLeft: "10px", fontSize: "1.2em", alignSelf:"screenLeft"}}>Ajouter aux favoris</span></div>
-      {recipe?.image_url && <img src={recipe.image_url} alt={recipe?.name} style={styles.image} />}
+      {recipe?.image_url ? <img src={recipe.image_url} alt={recipe.name} style={styles.image}></img> : <img src={defaultImage} alt="Goûtez aux meilleures recettes de bon-app" style={styles.image}></img>}
       
       <div style={styles.details}>
         <div style={styles.detailItem}><strong>Temps de cuisson :</strong> {recipe?.cook_time ?? "Non indiqué"} min</div>

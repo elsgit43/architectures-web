@@ -7,7 +7,7 @@ export function Navbar(){
     return(
         <>
         <div className="navbar">
-            <h1>Ici ça cook</h1>
+            <h1>bon app</h1>
             <div className="nav-links">
                 <Link to="/" className={location.pathname==="/" ? "active" : ""}>Home</Link>
                 <Link to="/profile" className={location.pathname==="/profile" ? "active" : ""}>Profil</Link>

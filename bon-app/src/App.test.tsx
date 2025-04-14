@@ -1,40 +1,20 @@
 import React from "react";
 import { render, screen } from "@testing-library/react";
-import { Recipe } from "./Pages/recipe";
-import { MemoryRouter } from "react-router-dom";
+import App from "./App";
 
-jest.mock("react-router-dom", () => ({
-  ...jest.requireActual("react-router-dom"),
-  useParams: () => ({ id: "123" }),
-}));
-
-// On évite les appels API réels en mockant fetch
-global.fetch = vi.fn(() =>
+// Mocks pour fetch
+global.fetch = jest.fn(() =>
   Promise.resolve({
     ok: true,
-    json: () =>
-      Promise.resolve({
-        name: "Pizza",
-        description: "Une pizza délicieuse",
-        cook_time: 20,
-        cost: 10,
-        image_url: "",
-        prep_time: 15,
-        servings: 2,
-        when_to_eat: "Dîner",
-        instructions: "1. Faire ceci\n2. Faire cela",
-      }),
+    json: () => Promise.resolve([]),
   })
 ) as jest.Mock;
 
-describe("Recipe component", () => {
-  it("affiche 'Chargement...' au début", () => {
-    render(
-      <MemoryRouter>
-        <Recipe />
-      </MemoryRouter>
-    );
+describe("App component", () => {
+  it("renders without crashing", () => {
+    render(<App />); // Pas besoin de MemoryRouter ici
 
-    expect(screen.getByText(/Chargement/i)).toBeInTheDocument();
+    // Ajoute tes assertions ici
+    expect(screen.getByText(/bon app/i)).toBeInTheDocument();
   });
 });
