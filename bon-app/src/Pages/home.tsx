@@ -34,10 +34,10 @@ export function Home() {
             async function fetchRecipe() {
                 try {
                     const response = await fetch('https://gourmet.cours.quimerch.com/recipes',options);
-                    console.log(response);
                     if (!response.ok) throw new Error("Erreur lors de la récupération des données");
     
                     const data = await response.json();
+                    console.log(data)
                     setRecipe(data);
                 } catch (error) {
                     setError((error as Error).message);
@@ -56,29 +56,18 @@ export function Home() {
     return (
         <div className="App">
           <header className="App-header">
-            <img src={logo} className="App-logo" alt="logo" />
-            <p>
-              Page d'accueil projet d'ArchiWeb
-            </p>
-
-            <div style={{ display: "flex", flexWrap: "wrap", gap: "20px" }}>
+            <div className="recipe-grid">
               {recipe.map((reciped) => (
-                <Link to={{pathname:`/recipe/${reciped.id}`}}>
-                <div key={recipe.id} style={{
-                  border: "1px solid #ddd",
-                  padding: "20px",
-                  borderRadius: "10px",
-                  boxShadow: "2px 2px 10px rgba(0,0,0,0.1)",
-                  maxWidth: "300px",
-                  maxHeight:"400px",
-                  whiteSpace: "nowrap",
-                  overflow: "hidden",
-                  textOverflow: "ellipsis"
-                }}>
-                  
-                  <img src={reciped.image_url} width="100%" alt={reciped.name}></img>
+                <Link
+                key={reciped.id}
+                to={{pathname:`/recipe/${reciped.id}`}}
+                style={{textDecoration:'none'}}>
+                <div className="recipe-card">
+                  <img src={reciped.image_url} alt={reciped.name}></img>
+                  <div className="recipe-card-content">
                   <h2>{reciped.name}</h2>
-                  <p>{reciped.instructions}</p>
+                  <p>{reciped.description}</p>
+                  </div>
                   
                 </div>
                 </Link>
