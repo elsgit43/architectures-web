@@ -59,22 +59,8 @@ describe('Favorites Component', () => {
         (fetch as jest.Mock).mockResolvedValueOnce({
             ok: true,
             json: async () => [
-                {
-                    recipe: {
-                        id: '1',
-                        name: 'Recipe 1',
-                        description: 'Delicious recipe 1',
-                        image_url: 'https://example.com/image1.jpg',
-                    },
-                },
-                {
-                    recipe: {
-                        id: '2',
-                        name: 'Recipe 2',
-                        description: 'Delicious recipe 2',
-                        image_url: 'https://example.com/image2.jpg',
-                    },
-                },
+                { recipe: { id: '1', name: 'Recipe 1', description: 'Delicious recipe 1', image_url: 'https://example.com/image1.jpg' } },
+                { recipe: { id: '2', name: 'Recipe 2', description: 'Delicious recipe 2', image_url: 'https://example.com/image2.jpg' } },
             ],
         });
 
