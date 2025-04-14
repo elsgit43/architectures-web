@@ -23,4 +23,4 @@ jobs:
         run: cd bon-app && npm install
 
       - name: 🧪 Lancer les tests
-        run: npm test -- --watchAll=false
+        run: cd bon-app && npm test -- --watchAll=false
