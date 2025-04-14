@@ -28,7 +28,6 @@ export function Favorites() {
   const [recipes, setRecipes] = useState<Recipe | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<String | null>(null);
-  const options = {method: 'GET', headers: {Accept: 'application/json, application/xml', 'Authorization': `Bearer ${token}`}};
           
   useEffect(() => {
     
@@ -39,10 +38,11 @@ export function Favorites() {
           return;
         }
           try {
+              const options = {method: 'GET', headers: {Accept: 'application/json, application/xml', 'Authorization': `Bearer ${token}`}};
               const response = await fetch('https://gourmet.cours.quimerch.com/favorites',options);
               if (!response.ok) throw new Error("Erreur lors de la récupération des données");
               const data = await response.json();
-                if (data.title== "Unauthorized") {
+                if (data.title === "Unauthorized") {
                   window.location.href = '/profile';
                 }
                 if(data){
@@ -57,7 +57,7 @@ export function Favorites() {
       }
       
         fetchRecipe();
-  }, []);
+  }, [token]);
 
   if (loading) return <p>Chargement...</p>;
   if (error) return <p>Erreur : {error}</p>;

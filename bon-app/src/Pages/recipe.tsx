@@ -1,4 +1,4 @@
-import React, { use, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import * as FaIcons from "react-icons/fa";
 import { IconType } from "react-icons";
@@ -23,7 +23,6 @@ export function Recipe() {
   } | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const options = { method: 'GET', headers: { Accept: 'application/json, application/xml' } };
   const [isFavorite, setIsFavorite] = useState(false);
 
   useEffect(() => {
@@ -32,6 +31,7 @@ export function Recipe() {
       setLoading(true);
       setError(null);
       try {
+        const options = { method: 'GET', headers: { Accept: 'application/json, application/xml' } };
         const response = await fetch(`https://gourmet.cours.quimerch.com/recipes/${id}`, options);
         console.log(response);
         if (!response.ok) throw new Error("Erreur lors de la récupération des données");
@@ -62,7 +62,7 @@ export function Recipe() {
 
     fetchRecipe();
     fetchfavorite();
-  }, [id]);
+  }, [id,token]);
 
   useEffect(() => {
     async function Favorite(){
@@ -99,7 +99,7 @@ export function Recipe() {
       }
     };
     Favorite();
-  },[isFavorite])
+  },[isFavorite,id,token])
 
   const [isHovered, setIsHovered] = useState(false);
 

@@ -1,8 +1,7 @@
-import React, { useState, useEffect} from "react";
+import React, { useState, useEffect, useCallback} from "react";
 import { Link } from "react-router-dom";
 import { FaSearch } from "react-icons/fa";
 import { JSX } from "react/jsx-runtime";
-import { Recipe } from "../Pages/recipe";
 
 export function Searchbar(){
     const SearchIcon = FaSearch as React.FC;
@@ -29,8 +28,9 @@ export function Searchbar(){
             const [recipe2, setRecipe2] = useState<Recipe[] | null>(null);
             const [loading, setLoading] = useState(true);
             const [error, setError] = useState<string | null>(null);
-            const options = {method: 'GET', headers: {Accept: 'application/json, application/xml'}};
-            async function fetchRecipes(value : string) {
+            
+            const fetchRecipes=useCallback(async (value : string) =>{
+                const options = {method: 'GET', headers: {Accept: 'application/json, application/xml'}};
                 try {
                     const response = await fetch('https://gourmet.cours.quimerch.com/recipes',options);
                     if (!response.ok) throw new Error("Erreur lors de la récupération des données");
@@ -45,7 +45,7 @@ export function Searchbar(){
                 } finally {
                     setLoading(false);
                 }
-            }
+            },[])
             const HandleChange = (value:string)=>{
                 setInput(value)
                 fetchRecipes(value)
@@ -53,7 +53,7 @@ export function Searchbar(){
             
             useEffect(() => {
                 fetchRecipes(input);
-            }, [input]);
+            }, [input, fetchRecipes]);
 
             useEffect(() => {
                 console.log("Recipe updated:", recipe2);
