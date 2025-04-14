@@ -1,9 +1,10 @@
 name: Docker Build & Push
 
 on:
-  push:
-    branches:
-      - main  # Change si nécessaire
+  workflow_run:
+    workflows: ["CI - React App"]
+    types:
+      - completed
 
 jobs:
   build-and-push:
@@ -34,12 +35,10 @@ jobs:
           current_version=${current_version:-0}
           new_version=$((current_version + 1))
           echo "new_version=v$new_version" >> $GITHUB_OUTPUT
-
       - name: Build and push Docker images
         run: |
-          docker build . --platform linux/amd64 \
+          docker build bon-app/. --platform linux/amd64 \
             -t elsal1/bon-app:latest \
             -t elsal1/bon-app:${{ steps.version.outputs.new_version }}
-
           docker push elsal1/bon-app:latest
           docker push elsal1/bon-app:${{ steps.version.outputs.new_version }}
