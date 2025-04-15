@@ -11,10 +11,10 @@ global.fetch = jest.fn(() =>
 ) as jest.Mock;
 
 describe("App component", () => {
-  it("renders without crashing", () => {
-    render(<App />); // Pas besoin de MemoryRouter ici
+  it("renders without crashing", async () => {
+    render(<App />);
 
-    // Ajoute tes assertions ici
-    expect(screen.getByText(/bon app/i)).toBeInTheDocument();
+    const heading = await screen.findByText(/bon app/i);
+    expect(heading).toBeInTheDocument();
   });
 });

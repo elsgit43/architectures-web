@@ -211,3 +211,5 @@ const styles = {
     border: '1px solid #ddd',
   },
 };
+
+export default Recipe;

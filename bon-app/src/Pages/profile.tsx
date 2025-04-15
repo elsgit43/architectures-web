@@ -83,7 +83,7 @@ export function Profil() {
         if (token) {
             me();
         }
-    }, [token, profile]);
+    }, [token]);
 
     if (!token) {
         return (
@@ -126,3 +126,5 @@ export function Profil() {
         )
     }
 }
+
+export default Profil;
